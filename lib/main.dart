@@ -27,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late int firstnum;
   late int secondnum;
+  String history = "";
   String texttodisplay = "";
   late String res;
   late String operatortoperform;
@@ -37,6 +38,20 @@ class _MyHomePageState extends State<MyHomePage> {
       firstnum = 0;
       secondnum = 0;
       res = "";
+    } else if (btnval == "AC") {
+      texttodisplay = "";
+      firstnum = 0;
+      secondnum = 0;
+      res = "";
+      history = "";
+    } else if (btnval == "+/-") {
+      if (texttodisplay[0] != "-") {
+        res = "-" + texttodisplay;
+      } else {
+        res = texttodisplay.substring(1);
+      }
+    } else if (btnval == "DEL") {
+      res = texttodisplay.substring(0, texttodisplay.length - 1);
     } else if (btnval == "+" ||
         btnval == "-" ||
         btnval == "x" ||
@@ -48,15 +63,27 @@ class _MyHomePageState extends State<MyHomePage> {
       secondnum = int.parse(texttodisplay);
       if (operatortoperform == "+") {
         res = (firstnum + secondnum).toString();
+        history = firstnum.toString() +
+            operatortoperform.toString() +
+            secondnum.toString();
       }
       if (operatortoperform == "-") {
         res = (firstnum - secondnum).toString();
+        history = firstnum.toString() +
+            operatortoperform.toString() +
+            secondnum.toString();
       }
       if (operatortoperform == "x") {
         res = (firstnum * secondnum).toString();
+        history = firstnum.toString() +
+            operatortoperform.toString() +
+            secondnum.toString();
       }
       if (operatortoperform == "/") {
         res = (firstnum ~/ secondnum).toString();
+        history = firstnum.toString() +
+            operatortoperform.toString() +
+            secondnum.toString();
       }
     } else {
       res = int.parse(texttodisplay + btnval).toString();
@@ -90,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Container(
+        margin: EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -98,9 +126,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.all(10.0),
                 alignment: Alignment.bottomRight,
                 child: Text(
+                  "$history",
+                  style: TextStyle(
+                      fontSize: 34.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.bottomRight,
+                child: Text(
                   "$texttodisplay",
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 48.0,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -108,10 +149,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Row(
               children: <Widget>[
+                custombutton("AC"),
+                custombutton("DEL"),
+                custombutton("/"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
                 custombutton("9"),
                 custombutton("8"),
                 custombutton("7"),
-                custombutton("+"),
+                custombutton("x"),
               ],
             ),
             Row(
@@ -127,15 +175,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 custombutton("3"),
                 custombutton("2"),
                 custombutton("1"),
-                custombutton("x"),
+                custombutton("+"),
               ],
             ),
             Row(
               children: <Widget>[
-                custombutton("C"),
+                custombutton("+/-"),
                 custombutton("0"),
+                custombutton("00"),
                 custombutton("="),
-                custombutton("/"),
               ],
             ),
           ],
